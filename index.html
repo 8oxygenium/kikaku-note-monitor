@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="モニターのインチ数、解像度、横幅・高さ、PPIを確認できる計算ツール。24/27/32/34/49インチ、16:9/16:10/21:9/32:9、フルHD/WQHD/4K/5Kに対応。">
+    <meta name="canonical" content="https://monitor.kikaku-note.com/">
+    
+    <!-- OGP Tags -->
+    <meta property="og:title" content="モニターサイズ早見表 - インチ・解像度・PPI計算">
+    <meta property="og:description" content="モニターのサイズ、解像度、PPI を簡単に計算・確認できるツール">
+    <meta property="og:url" content="https://monitor.kikaku-note.com/">
+    <meta property="og:type" content="website">
+    
+    <!-- GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C3M3YRW4B7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-C3M3YRW4B7');
+    </script>
+    
+    <title>モニターサイズ早見表 - インチ・解像度・PPI計算ツール</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #222;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .description {
+            font-size: 14px;
+            color: #999;
+            margin-top: 10px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+        
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .result {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            border-left: 4px solid #0066cc;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .result-value {
+            color: #0066cc;
+            font-weight: 600;
+        }
+        
+        .button {
+            background: #0066cc;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .button:hover {
+            background: #0052a3;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background: #f0f0f0;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        tr:hover {
+            background: #fafafa;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 900px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 8px 12px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            background: #0066cc;
+            color: white;
+            border-color: #0066cc;
+        }
+        
+        .tab-btn:hover {
+            background: #e6e6e6;
+        }
+        
+        .tab-btn.active:hover {
+            background: #0052a3;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .use-case {
+            background: white;
+            padding: 15px;
+            border-left: 4px solid #0066cc;
+            margin-bottom: 10px;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .use-case-title {
+            font-weight: 600;
+            color: #0066cc;
+            margin-bottom: 5px;
+        }
+        
+        .use-case-text {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .link-box {
+            background: #f0f7ff;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .link-box a {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .link-box a:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 12px;
+            margin-top: 40px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #222;
+        }
+        
+        h3 {
+            font-size: 16px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .note {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #856404;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>モニターサイズ早見表</h1>
+            <p class="subtitle">インチ・解像度・PPI計算ツール</p>
+            <p class="description">モニターのサイズ、解像度、PPIを簡単に確認・計算できます</p>
+        </header>
+        
+        <!-- 計算ツール -->
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title">📐 モニターサイズ計算機</div>
+                
+                <div class="input-group">
+                    <label for="diagonal">対角線サイズ（インチ）</label>
+                    <input type="number" id="diagonal" min="1" max="200" value="27" step="0.1">
+                </div>
+                
+                <div class="input-group">
+                    <label for="aspect">アスペクト比</label>
+                    <select id="aspect">
+                        <option value="1.778">16:9</option>
+                        <option value="1.6">16:10</option>
+                        <option value="2.333">21:9 (ウルトラワイド)</option>
+                        <option value="3.556">32:9 (スーパーウルトラワイド)</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="resolution">解像度</label>
+                    <select id="resolution">
+                        <option value="1920,1080">FHD (1920×1080)</option>
+                        <option value="2560,1440">WQHD (2560×1440)</option>
+                        <option value="3840,2160">4K (3840×2160)</option>
+                        <option value="5120,2880">5K (5120×2880)</option>
+                        <option value="7680,4320">8K (7680×4320)</option>
+                        <option value="2560,1080">FHD+ ウルトラワイド (2560×1080)</option>
+                        <option value="3440,1440">WQHD+ ウルトラワイド (3440×1440)</option>
+                        <option value="5120,1440">8K ウルトラワイド (5120×1440)</option>
+                        <option value="5120,1440">32:9 (5120×1440)</option>
+                    </select>
+                </div>
+                
+                <button class="button" onclick="calculateMonitor()">計算する</button>
+                
+                <div id="calcResult" class="result" style="display:none;">
+                    <div class="result-item">
+                        <span class="result-label">横幅（推定）</span>
+                        <span class="result-value" id="calcWidth">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">高さ（推定）</span>
+                        <span class="result-value" id="calcHeight">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">PPI（推定）</span>
+                        <span class="result-value" id="calcPPI">-</span>
+                    </div>
+                    <p class="note">※ 物理サイズは計算値の目安です。実際の製品仕様をご確認ください。</p>
+                </div>
+            </div>
+            
+            <!-- 早見表タブ -->
+            <div class="card">
+                <div class="card-title">📊 主要サイズ早見表</div>
+                
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="showResolutionTab('fhd')">FHD</button>
+                    <button class="tab-btn" onclick="showResolutionTab('wqhd')">WQHD</button>
+                    <button class="tab-btn" onclick="showResolutionTab('4k')">4K</button>
+                    <button class="tab-btn" onclick="showResolutionTab('5k')">5K</button>
+                    <button class="tab-btn" onclick="showResolutionTab('ultrawide')">UW</button>
+                </div>
+                
+                <!-- FHD Tab -->
+                <div id="tab-fhd" class="tab-content active">
+                    <table>
+                        <tr>
+                            <th>インチ</th>
+                            <th>解像度</th>
+                            <th>PPI</th>
+                            <th>用途</th>
+                        </tr>
+                        <tr>
+                            <td>24"</td>
+                            <td>1920×1080</td>
+                            <td>92</td>
+                            <td>標準ゲーム</td>
+                        </tr>
+                        <tr>
+                            <td>27"</td>
+                            <td>1920×1080</td>
+                            <td>82</td>
+                            <td>ゲーミング</td>
+                        </tr>
+                        <tr>
+                            <td>32"</td>
+                            <td>1920×1080</td>
+                            <td>69</td>
+                            <td>大型ゲーム</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- WQHD Tab -->
+                <div id="tab-wqhd" class="tab-content">
+                    <table>
+                        <tr>
+                            <th>インチ</th>
+                            <th>解像度</th>
+                            <th>PPI</th>
+                            <th>用途</th>
+                        </tr>
+                        <tr>
+                            <td>27"</td>
+                            <td>2560×1440</td>
+                            <td>109</td>
+                            <td>作業・ゲーム</td>
+                        </tr>
+                        <tr>
+                            <td>32"</td>
+                            <td>2560×1440</td>
+                            <td>92</td>
+                            <td>作業用</td>
+                        </tr>
+                        <tr>
+                            <td>34"</td>
+                            <td>3440×1440</td>
+                            <td>110</td>
+                            <td>ウルトラワイド作業</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- 4K Tab -->
+                <div id="tab-4k" class="tab-content">
+                    <table>
+                        <tr>
+                            <th>インチ</th>
+                            <th>解像度</th>
+                            <th>PPI</th>
+                            <th>用途</th>
+                        </tr>
+                        <tr>
+                            <td>27"</td>
+                            <td>3840×2160</td>
+                            <td>163</td>
+                            <td>映像編集</td>
+                        </tr>
+                        <tr>
+                            <td>32"</td>
+                            <td>3840×2160</td>
+                            <td>138</td>
+                            <td>映像・写真編集</td>
+                        </tr>
+                        <tr>
+                            <td>49"</td>
+                            <td>5120×1440</td>
+                            <td>110</td>
+                            <td>マルチタスク</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- 5K Tab -->
+                <div id="tab-5k" class="tab-content">
+                    <table>
+                        <tr>
+                            <th>インチ</th>
+                            <th>解像度</th>
+                            <th>PPI</th>
+                            <th>用途</th>
+                        </tr>
+                        <tr>
+                            <td>27"</td>
+                            <td>5120×2880</td>
+                            <td>218</td>
+                            <td>高精度作業</td>
+                        </tr>
+                        <tr>
+                            <td>32"</td>
+                            <td>5120×2880</td>
+                            <td>184</td>
+                            <td>プロ用編集</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- ウルトラワイド Tab -->
+                <div id="tab-ultrawide" class="tab-content">
+                    <table>
+                        <tr>
+                            <th>インチ</th>
+                            <th>解像度</th>
+                            <th>PPI</th>
+                            <th>用途</th>
+                        </tr>
+                        <tr>
+                            <td>34"</td>
+                            <td>3440×1440</td>
+                            <td>110</td>
+                            <td>マルチタスク</td>
+                        </tr>
+                        <tr>
+                            <td>49"</td>
+                            <td>5120×1440</td>
+                            <td>110</td>
+                            <td>デュアル画面相当</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用途別選び方 -->
+        <div class="card">
+            <div class="card-title">💡 モニター選び方ガイド</div>
+            
+            <div class="use-case">
+                <div class="use-case-title">🎮 ゲーミング用</div>
+                <div class="use-case-text">
+                    <strong>推奨：24～27インチ / 144Hz以上 / 1ms以下応答時間</strong><br>
+                    FHD (1920×1080) 推奨。高リフレッシュレートが重要。27インチなら WQHD (2560×1440) で解像度とのバランスが取れます。応答時間が重要なFPS、格闘ゲームは24インチ、ストーリーゲームは27インチがおすすめ。
+                </div>
+            </div>
+            
+            <div class="use-case">
+                <div class="use-case-title">🎬 動画・画像編集用</div>
+                <div class="use-case-text">
+                    <strong>推奨：27～32インチ / 4K (3840×2160) / 色精度 Delta E &lt; 2</strong><br>
+                    色再現性が重要。27インチ 4K が標準。32インチは作業エリアが広い。正確な色管理が必要な場合は 5K (5120×2880) も選択肢。IPS パネル推奨。
+                </div>
+            </div>
+            
+            <div class="use-case">
+                <div class="use-case-title">💼 事務作業・プログラミング用</div>
+                <div class="use-case-text">
+                    <strong>推奨：27～34インチ / WQHD (2560×1440) ～ 4K / ウルトラワイド推奨</strong><br>
+                    ウルトラワイド (34インチ / 3440×1440) でデュアルモニター相当の作業効率。通常の 27～32インチ WQHD でも十分。長時間作業はブルーライト軽減機能を確認。
+                </div>
+            </div>
+            
+            <div class="use-case">
+                <div class="use-case-title">🖼️ 画像・グラフィック制作用</div>
+                <div class="use-case-text">
+                    <strong>推奨：32インチ / 4K～5K / Adobe RGB 99% 以上</strong><br>
+                    広色域が必須。27インチ 4K より 32インチの方が作業面積が広い。USB-C 給電対応で接続がシンプル。
+                </div>
+            </div>
+        </div>
+        
+        <!-- 用語解説 -->
+        <div class="card">
+            <div class="card-title">📚 用語解説</div>
+            
+            <div class="section">
+                <div class="section-title">インチ（対角線サイズ）</div>
+                <p>モニターの対角線を inch（インチ）で表示。1インチ = 2.54cm。一般的には22～27インチが主流。</p>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">アスペクト比</div>
+                <p>
+                    <strong>16:9</strong> - 最も一般的。テレビ・映画と同じ。<br>
+                    <strong>16:10</strong> - 少し高い。オフィス作業向け。<br>
+                    <strong>21:9（ウルトラワイド）</strong> - 横に長い。映画的。マルチウィンドウ作業に最適。<br>
+                    <strong>32:9（スーパーウルトラワイド）</strong> - さらに横長。デュアルモニター相当。
+                </p>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">解像度（ピクセル数）</div>
+                <p>
+                    <strong>FHD (1920×1080)</strong> - 最も一般的。テキストが少し大きめ。<br>
+                    <strong>WQHD (2560×1440)</strong> - 標準～高解像度。27インチの最適解像度。<br>
+                    <strong>4K (3840×2160)</strong> - 高解像度。映像編集に人気。テキストが小さい。<br>
+                    <strong>5K (5120×2880)</strong> - 超高解像度。プロ向け。高性能 GPU が必要。<br>
+                    <strong>8K (7680×4320)</strong> - 最上位。future-proof だが普及はまだ先。
+                </p>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">PPI（ピクセル・パー・インチ）</div>
+                <p>
+                    1インチあたりのピクセル数。値が高いほど細かく、テキストが鮮明。<br>
+                    <strong>～92 PPI</strong> - 粗い。ゲーミング用。<br>
+                    <strong>110 PPI</strong> - 標準的。バランス型。<br>
+                    <strong>163 PPI 以上</strong> - 緻密。テキスト作業向け。
+                </p>
+            </div>
+        </div>
+        
+        <!-- 関連リンク -->
+        <div class="link-box">
+            <p>🔗 <strong>関連サイト</strong></p>
+            <p><a href="https://kikaku-note.com/" target="_blank">kikaku-note.com - サイズ・寸法・規格の総合データベース</a></p>
+        </div>
+        
+        <footer>
+            <p>&copy; 2024 monitor.kikaku-note.com | <a href="https://kikaku-note.com/" style="color: #0066cc; text-decoration: none;">kikaku-note</a> の関連サイト</p>
+        </footer>
+    </div>
+    
+    <script>
+        // PPI 計算
+        function calculatePPI(width, height, diagonal) {
+            const diagonalPx = Math.sqrt(width * width + height * height);
+            return (diagonalPx / diagonal).toFixed(0);
+        }
+        
+        // モニター計算
+        function calculateMonitor() {
+            const diagonal = parseFloat(document.getElementById('diagonal').value);
+            const aspectStr = document.getElementById('aspect').value;
+            const resolutionStr = document.getElementById('resolution').value;
+            
+            if (!diagonal) {
+                alert('インチを入力してください');
+                return;
+            }
+            
+            const [resWidth, resHeight] = resolutionStr.split(',').map(Number);
+            const aspect = parseFloat(aspectStr);
+            
+            // 対角線（cm）
+            const diagonalCm = diagonal * 2.54;
+            
+            // 縦横サイズ（cm）
+            const widthCm = diagonalCm / Math.sqrt(1 + (1/aspect)*(1/aspect));
+            const heightCm = widthCm / aspect;
+            
+            // PPI 計算
+            const ppi = calculatePPI(resWidth, resHeight, diagonal);
+            
+            // 表示
+            document.getElementById('calcWidth').textContent = widthCm.toFixed(1) + ' cm';
+            document.getElementById('calcHeight').textContent = heightCm.toFixed(1) + ' cm';
+            document.getElementById('calcPPI').textContent = ppi + ' PPI';
+            document.getElementById('calcResult').style.display = 'block';
+        }
+        
+        // 初期計算実行
+        window.addEventListener('DOMContentLoaded', function() {
+            calculateMonitor();
+        });
+        
+        // タブ切り替え
+        function showResolutionTab(tabName) {
+            // すべてのタブを非表示
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // 選択したタブを表示
+            document.getElementById('tab-' + tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // Enter キーで計算
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input[type="number"], select');
+            inputs.forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        calculateMonitor();
+                    }
+                });
+                input.addEventListener('change', calculateMonitor);
+            });
+        });
+    </script>
+</body>
+</html>
